@@ -333,6 +333,8 @@ class VisualsScreen:
 
 
 
+
+
         """ LABEL FOR DATE PICKER"""
         #Label for the question
         label2 = tk.Label(canvas1, text='Select the date you want to check files previous from',
