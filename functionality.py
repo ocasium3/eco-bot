@@ -54,47 +54,6 @@ canvas1 = tk.Canvas(root, width = 900, height = 500)
 #Display Image
 canvas1.create_image(0,0, image = bg, anchor = "nw")
 
-
-#Graph for storage space:
-total, used, free = shutil.disk_usage("/")
-
-print("Total: %d GiB" % (total // (2**30)))
-print("Used: %d GiB" % (used // (2**30)))
-print("Free: %d GiB" % (free // (2**30)))
-# the variables below size the bar graph
-# experiment with them to fit your needs
-# highest y = max_data_value * y_stretch
-y_stretch = 15
-# gap between lower canvas edge and x axis
-y_gap = 20
-# stretch enough to get all data items in
-x_stretch = 10
-x_width = 10
-
-# calculate reactangle coordinates (integers) for each bar
-x0 = (used // (2**30))
-y0 = (total // (2**30))
-x1 = 20
-y1 = 100
-# draw the bar RED
-#canvas1.create_rectangle(y0, x0, y1, x1, fill="red")
-canvas1.create_rectangle(650, 150, 650+100*(x0/y0), 200, fill="red")
-
-# put the y value above each bar
-canvas1.create_text(y0+2, x0, anchor=tk.SW, text=str(x0)+"/"+str(y0))
-
-# calculate reactangle coordinates (integers) for each bar
-#y0 = 15 * y_stretch
-# draw the bar BLUE
-#canvas1.create_rectangle(y0, x0, y1, x1, fill="blue")
-canvas1.create_rectangle(650+100*(x0/y0), 150, 750, 200, fill="blue")
-# put the y value above each bar
-canvas1.create_text(y0+2, x0, anchor=tk.SW)
-
-canvas1.pack(fill = "both", expand = True)
-canvas2 = tk.Canvas(root, width = 900, height = 500)
-
-
 class deleteFilesInFolder:
 
     def __init__(self):
@@ -211,7 +170,7 @@ class deleteFilesInFolder:
         self.clean_files(myDir)
 
 
-    def clean_files_all(self):
+    def clean_files_all(self): # NOT USED AT THE MOMENT
         """Clean all files bigger than 2000000000""" 
         myDir = "/Users/"
         bytesTreshold = 2000000000
@@ -274,15 +233,10 @@ class VisualsScreen:
 
     # Class variables
     #Entry for the number of bytes
-    entry1 = tk.Entry (canvas1, borderwidth = 1, relief = "solid",justify= CENTER)
-    #Defining default value
-    entry1.insert(0, "200")
-    entry1.place(x = 100, y = 123)
-  
+    entry1 = tk.Entry()
+
     #Entry for the keyword
-    entry2 = tk.Entry (canvas1, borderwidth = 1, relief = "solid", justify= CENTER)
-    entry2.insert(0, "") #Defining default value
-    entry2.place(x = 100, y =190)
+    entry2 = tk.Entry ()
     
     style = ttk.Style()
     # calendar
@@ -295,30 +249,6 @@ class VisualsScreen:
     dateentry.grid(row=0,column=0,padx=100, pady = 255)
 
 
-    
-    """ Checkbutton1 = IntVar()  
-    Checkbutton2 = IntVar()  
-
-    
-    Button1 = Checkbutton(root, text = "Resize", 
-                        variable = Checkbutton1,
-                        onvalue = 1,
-                        offvalue = 0,
-                        height = 2,
-                        width = 10,bg= "white")
-
-
-    Button2 = Checkbutton(root, text = "Delete", 
-                        variable = Checkbutton2,
-                        onvalue = 1,
-                        offvalue = 0,
-                        height = 2,
-                        width = 10,bg= "white")
-
-    Button1.place(x = 50, y =215)
-    Button2.place(x = 150, y =215) """
-
-
 
     def __init__(self):
 
@@ -329,6 +259,7 @@ class VisualsScreen:
 
         self.labels()
 
+        self.display_memory()
 
 
     def display_title(self):
@@ -357,8 +288,6 @@ class VisualsScreen:
         
         """README Button"""
         
-
-        
         Fact = """The Eco-Bot is a ML&CS FG Python Script that help us clean 
         our folders from files we do not use anymore
         In order to use the Eco-Bot you can set up some filters. 
@@ -384,9 +313,11 @@ class VisualsScreen:
 
         label2.config(font=('ariel', 10))
         label2.place(x= 10,y=93) 
-
-
-
+        
+        #Defining default value
+        self.entry1 = tk.Entry (canvas1, borderwidth = 1, relief = "solid",justify= CENTER)
+        self.entry1.insert(0, "200")
+        self.entry1.place(x = 100, y = 123)
 
 
         """ LABEL FOR KEYWORD """
@@ -395,7 +326,10 @@ class VisualsScreen:
         width = 40, borderwidth = 1, relief = "solid", bg = "white")
         label2.config(font=('ariel', 10))
         label2.place(x= 10, y = 160) #canvas1.create_window(400, 125, window=label2)
-
+        
+        self.entry2 = tk.Entry (canvas1, borderwidth = 1, relief = "solid", justify= CENTER)
+        self.entry2.insert(0, "") #Defining default value
+        self.entry2.place(x = 100, y =190)
 
 
 
@@ -406,6 +340,48 @@ class VisualsScreen:
         label2.config(font=('ariel', 10))
         label2.place(x= 10, y = 225) #canvas1.create_window(400, 125, window=label2)
 
+    def display_memory(self):
+        #Graph for storage space:  -> MOVED INTO A "VISUALS" FILE
+        total, used, free = shutil.disk_usage("/")
+
+        print("Total: %d GiB" % (total // (2**30)))
+        print("Used: %d GiB" % (used // (2**30)))
+        print("Free: %d GiB" % (free // (2**30)))
+        # the variables below size the bar graph
+        # experiment with them to fit your needs
+        # highest y = max_data_value * y_stretch
+        y_stretch = 15
+        # gap between lower canvas edge and x axis
+        y_gap = 20
+        # stretch enough to get all data items in
+        x_stretch = 10
+        x_width = 10
+
+        # calculate reactangle coordinates (integers) for each bar
+        x0 = (used // (2**30))
+        y0 = (total // (2**30))
+        x1 = 20
+        y1 = 100
+        # draw the bar RED
+        #canvas1.create_rectangle(y0, x0, y1, x1, fill="red")
+        canvas1.create_rectangle(650, 150, 650+100*(x0/y0), 200, fill="red")
+
+        # put the y value above each bar
+        canvas1.create_text(y0+2, x0, anchor=tk.SW, text=str(x0)+"/"+str(y0))
+
+        # calculate reactangle coordinates (integers) for each bar
+        #y0 = 15 * y_stretch
+        # draw the bar BLUE
+        #canvas1.create_rectangle(y0, x0, y1, x1, fill="blue")
+        canvas1.create_rectangle(650+100*(x0/y0), 150, 750, 200, fill="blue")
+        # put the y value above each bar
+        canvas1.create_text(y0+2, x0, anchor=tk.SW)
+
+        canvas1.pack(fill = "both", expand = True)
+        canvas2 = tk.Canvas(root, width = 900, height = 500)
+        #----------------------------------------------
+
+
 
 
 class VisualsScreenRight:
@@ -415,10 +391,6 @@ class VisualsScreenRight:
     def __init__(self):
         self.labels()
         # self.buttons()
-
-        
-
-
 
     def labels(self):
 
